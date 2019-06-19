@@ -1,3 +1,43 @@
 #!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path('../lib', __dir__)
+require 'csv'
+require 'optparse'
+require 'exifr/jpeg'
+#require "exif_csv"
 
-require "exif_csv"
+DEFAULT_PATH = Dir.pwd
+
+options = { dry_run: false }
+
+ARGV.options do |opt|
+  opt.on('', '--dry-run') { options[:dry_run] = true }
+  opt.on('-h', '--help') do
+    puts opt.help
+    exit 0
+  end
+  opt.parse!
+end
+
+path = ARGV.first || DEFAULT_PATH
+images = Dir.glob("#{path}/**/*.jpg")
+
+if images.empty?
+  warn("No image was found in #{path}")
+  exit 1
+end
+
+input = []
+
+images.each do |i|
+  exifr = EXIFR::JPEG.new(i)
+  next if !exifr.exif? || exifr.gps.nil?
+  input << [i, exifr.gps.latitude, exifr.gps.longitude]
+end
+
+if options[:dry_run]
+  input.each { |i| p i.join(',') }
+else
+  CSV.open('./output.csv', 'wb') do |csv|
+    input.each { |i| csv<< i }
+  end
+end

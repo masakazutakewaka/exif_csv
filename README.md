@@ -1,8 +1,7 @@
 # ExifCsv
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/exif_csv`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+ExifCsv reads exif of all the jpgs in the directory and writes them in a csv file.
+It only supports gps latitude and longitude at the moment.
 
 ## Installation
 
@@ -22,7 +21,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ ls img
+/img
+├── cats
+│   └── image_e.jpg
+├── image_a.jpg
+├── image_b.jpg(doesn't have exif)
+├── image_c.jpg
+└── image_d.jpg(doesn't have gps tags)
+
+$ exif_csv img
+
+$ cat output.csv
+/img/cats/image_e.jpg,59.92475507998271,10.695598120067395
+/img/image_c.jpg,38.4,-122.82866666666666
+/img/image_a.jpg,50.09133333333333,-122.94566666666667
+```
+
+## Help
+
+```
+Usage: exif_csv [options]
+        --dry-run
+    -h, --help
+```
 
 ## Development
 

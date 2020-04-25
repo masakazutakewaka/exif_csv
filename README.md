@@ -1,6 +1,6 @@
 # ExifCsv
 
-ExifCsv reads exif of all the jpgs in the directory and writes them in a csv file.
+ExifCsv extracts exif of images into a CSV file.
 It only supports gps latitude and longitude at the moment.
 
 ## Installation
